@@ -13,16 +13,19 @@ class App extends React.Component {
     this.state = {
       value: "",
       category: "",
-      response: []
+      fullResponse: [],
+      dynamicResponse: [],
+      currKey: "1"
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleUserInput = this.handleUserInput.bind(this);
   }
-
   handleChange(e) {
+    this.setState({ dynamicResponse: [] });
     this.setState({ value: e.target.value });
     axios.get(`http://localhost:2424/all`).then(response => {
-      this.setState({ response: response.data });
+      this.setState({ fullResponse: response.data });
       for (let i = 0; i < response.data.length; i++) {
         for (let j = 0; j < this.state.value.length; j++) {
           if (
@@ -32,34 +35,54 @@ class App extends React.Component {
             break;
           }
           if (j === this.state.value.length - 1) {
-            console.log(response.data[i].name);
+            let newArr = this.state.dynamicResponse;
+            newArr.push(this.state.fullResponse[i].name);
+            this.setState({ dynamicResponse: newArr });
+            console.log(this.state.dynamicResponse);
+            newArr = [];
           }
         }
       }
     });
   }
+
   handleSubmit(e) {
-    let didFind = false;
-    for (let i = 0; i < this.state.response.length; i++) {
+    for (let i = 0; i < this.state.fullResponse.length; i++) {
+      let checkFullResponse = this.state.fullResponse;
+      let checkValue = this.state.value;
+      console.log(checkValue.toLowerCase());
       if (
-        this.state.response[i].name.toLowerCase() ===
-        this.state.value.toLowerCase()
+        checkFullResponse[i].name.toLowerCase() === checkValue.toLowerCase()
       ) {
         console.log("true!");
-        console.log(this.state.response[i].key);
+        console.log(this.state.fullResponse[i].key);
+        this.setState({ currKey: this.state.fullResponse[i].key });
         axios
-          .get(`http://localhost:2424/${this.state.response[i].key}`)
+          .get(`http://localhost:2424/${this.state.fullResponse[i].key}`)
           .then(data => {
-            didFind = true;
-            console.log("this is what we found! " + data);
+            console.log(data.data);
+            console.log(this.state.currKey);
           });
-        if (didFind === false) {
-          alert("your search did not find results");
-        }
       }
     }
-    e.preventDefault();
+
     this.setState({ value: "" });
+  }
+
+  handleUserInput(e) {
+    if (e.key === "Enter") {
+      if (this.state.dynamicResponse.length === 0) {
+        this.setState({
+          value:
+            "Nestle Pure Life Purified Water, 16.9 fl oz. Plastic Bottles (12 count)"
+        });
+      } else {
+        this.setState({ value: this.state.dynamicResponse[0] }, () => {
+          console.log(this.state.value);
+          this.handleSubmit(this.state.dynamicResponse[0]);
+        });
+      }
+    }
   }
 
   render() {
@@ -77,6 +100,7 @@ class App extends React.Component {
               className="search"
               value={this.state.value}
               onChange={this.handleChange}
+              onKeyPress={this.handleUserInput}
             />
             <button id="submit" onClick={this.handleSubmit}>
               <SearchIcon />
