@@ -1,0 +1,32 @@
+body {
+    margin: 0;
+}
+
+.main {
+    background-color: #232F3E;
+    height: 3%;
+}
+
+#menuButton {
+    background-color: #232F3E;
+    float: left;
+    margin: 7px 7px 8px 7px;
+    padding: 3px;
+    width: 38px;
+    height: 36px;
+    border-radius: 3px;
+    border: 1px solid #666;
+}
+
+#Gammazon {
+    font-size: 30px;
+    color: white;
+    margin: 10px 20px 5px 8px;
+}
+
+#category {
+    background-color: #F3F3F3;
+    padding-top: 20px;
+    padding-bottom: 24px;
+
+}

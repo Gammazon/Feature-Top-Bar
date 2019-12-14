@@ -1,0 +1,4 @@
+steps:
+  name: "mlucas24/gammazon-topbar:topbar"
+  args: ["build", "-t", "mlucas24/gammazon-topbar:topbar", "."]
+  images: -'mlucas24/gammazon-topbar:topbar'

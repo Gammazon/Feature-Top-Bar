@@ -1,169 +1,147 @@
 import React, { Component } from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import SearchIcon from "@material-ui/icons/Search";
+import SearchIcon from "@material-ui/icons/search";
 import LanguageIcon from "@material-ui/icons/Language";
 import RoomOutlinedIcon from "@material-ui/icons/RoomOutlined";
+import Container from "@material-ui/core/Container";
+import axios from "axios";
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    "& > *": {
-      margin: theme.spacing(0),
-      width: 1100,
-      height: 55,
-      color: "grey",
-      background: "white"
-    }
-  },
-  search: {
-    margin: theme.spacing(0),
-    width: 75,
-    height: 55,
-    background: "orange"
-  },
-  delivery: {
-    width: 240
-  },
-  underSearch: {
-    color: "grey"
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: "",
+      category: "",
+      fullResponse: [],
+      dynamicResponse: [],
+      currKey: "1"
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleUserInput = this.handleUserInput.bind(this);
   }
-}));
+  handleChange(e) {
+    this.setState({ dynamicResponse: [] });
+    this.setState({ value: e.target.value });
+    axios.get(`http://localhost:2424/all`).then(response => {
+      this.setState({ fullResponse: response.data });
+      for (let i = 0; i < response.data.length; i++) {
+        for (let j = 0; j < this.state.value.length; j++) {
+          if (
+            this.state.value[j].toLowerCase() !==
+            response.data[i].name[j].toLowerCase()
+          ) {
+            break;
+          }
+          if (j === this.state.value.length - 1) {
+            let newArr = this.state.dynamicResponse;
+            newArr.push(this.state.fullResponse[i].name);
+            this.setState({ dynamicResponse: newArr });
+            console.log(this.state.dynamicResponse);
+            newArr = [];
+          }
+        }
+      }
+    });
+  }
 
-const App = props => {
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  handleSubmit(e) {
+    for (let i = 0; i < this.state.fullResponse.length; i++) {
+      let checkFullResponse = this.state.fullResponse;
+      let checkValue = this.state.value;
+      console.log(checkValue.toLowerCase());
+      if (
+        checkFullResponse[i].name.toLowerCase() === checkValue.toLowerCase()
+      ) {
+        console.log("true!");
+        console.log(this.state.fullResponse[i].key);
+        this.setState({ currKey: this.state.fullResponse[i].key });
+        axios
+          .get(`http://localhost:2424/${this.state.fullResponse[i].key}`)
+          .then(data => {
+            console.log(data.data);
+            console.log(this.state.currKey);
+          });
+      }
+    }
 
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
+    this.setState({ value: "" });
+  }
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  return (
-    <div>
-      <div>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              edge="start"
-              //className={mergeClasses.menuButton}
-              color="inherit"
-              aria-label="menu"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" /*className={classes.title}*/>
-              Gammazon
-            </Typography>
-            <Button
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={handleClick}
-            >
-              Categories
-            </Button>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleClose}>Knives</MenuItem>
-              <MenuItem onClick={handleClose}>Transportation</MenuItem>
-              <MenuItem onClick={handleClose}>Food</MenuItem>
-            </Menu>
-            <form className={classes.root} noValidate autoComplete="off">
-              <TextField
-                id="outlined"
-                label="search"
-                variant="outlined"
-                color="secondary"
-              />
-              <Button className={classes.search} variant="contained">
-                <SearchIcon />
-              </Button>
-            </form>
-            <div>
-              <Button
-                aria-controls="language-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-                <span>
-                  En <br />
-                  <LanguageIcon />{" "}
-                </span>
-              </Button>
-            </div>
-            <div>
-              <Button
-                aria-controls="Account-Lists-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-                <span>
-                  Hello, Chosen One <br />
-                  Account & Lists{" "}
-                </span>
-              </Button>
-            </div>
-            <div>
-              <Button
-                aria-controls="Orders-button"
-                aria-haspopup="false"
-                onClick={handleClick}
-              >
-                Orders
-              </Button>
-            </div>
-            <div>
-              <Button
-                aria-controls="Prime-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-                Prime
-              </Button>
-            </div>
-          </Toolbar>
-        </AppBar>
+  handleUserInput(e) {
+    if (e.key === "Enter") {
+      if (this.state.dynamicResponse.length === 0) {
+        this.setState({
+          value:
+            "Nestle Pure Life Purified Water, 16.9 fl oz. Plastic Bottles (12 count)"
+        });
+      } else {
+        this.setState({ value: this.state.dynamicResponse[0] }, () => {
+          console.log(this.state.value);
+          this.handleSubmit(this.state.dynamicResponse[0]);
+        });
+      }
+    }
+  }
+
+  render() {
+    return (
+      <div className="main">
+        <div className="firstBar">
+          <button id="menuButton">
+            <MenuIcon style={{ color: "white", padding: "3px 5px 3px 3px" }} />
+          </button>
+          <span id="Gammazon">Gammazon</span>
+          <span className="searchbar">
+            <button id="category">All</button>
+            <input
+              type="text"
+              className="search"
+              value={this.state.value}
+              onChange={this.handleChange}
+              onKeyPress={this.handleUserInput}
+            />
+            <button id="submit" onClick={this.handleSubmit}>
+              <SearchIcon />
+            </button>
+          </span>
+          <button id="language">
+            En <br />
+            <LanguageIcon />{" "}
+          </button>
+          <button id="account">
+            <span id="tiny">Hello, Chosen One</span>
+            <br />
+            Account & Lists
+          </button>
+          <button id="orders">Orders</button>
+          <button id="Prime">Prime</button>
+          <button id="kart">kart</button>
+        </div>
+        <button id="address">
+          <RoomOutlinedIcon />
+          <span id="deliver">
+            <span id="deliverTiny">Deliver to Chosen One</span>
+            <br />
+            Austin 78701
+          </span>
+        </button>
+        <button className="underSearch">12 days of deals</button>
+        <button className="underSearch">Chosen One's Gammazon.com</button>
+        <button className="underSearch">Browsing History</button>
+        <button className="underSearch">Prime Video</button>
+        <button className="underSearch">Help</button>
+        <button className="underSearch">Best Sellers</button>
+        <button className="underSearch">Find a Gift</button>
+        <button className="underSearch">Buy Again</button>
+        <button className="underSearch">Gift Cards</button>
+        <button className="underSearch">New Releases</button>
+        <button className="underSearch">#FoundItOnGammazon</button>
+        <button className="underSearch">Whole Foods</button>
+        <span id="hireUs">We are available for hire!</span>
       </div>
-      <div>
-        <AppBar position="static">
-          <Toolbar>
-            <div className={classes.delivery}>
-              Deliver to Chosen one <br /> <RoomOutlinedIcon /> DUUUUUUVAL
-            </div>
-            <div className={classes.underSearch}>
-              <Typography variant="subtitle1">
-                <Button>12 days of deals</Button>
-                <Button>Chosen One's Gammazon.com</Button>
-                <Button>Browsing History</Button>
-                <Button>Prime Video</Button>
-                <Button>Help</Button>
-                <Button>Best Sellers</Button>
-                <Button>Find a Gift</Button>
-                <Button>Buy Again</Button>
-                <Button>Gift Cards</Button>
-                <Button>New Releases</Button>
-                <Button>#FoundItOnGammazon</Button>
-                <Button>Whole Foods</Button>
-              </Typography>
-            </div>
-          </Toolbar>
-        </AppBar>
-      </div>
-    </div>
-  );
-};
+    );
+  }
+}
 export default App;
