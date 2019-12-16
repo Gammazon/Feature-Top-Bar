@@ -1,32 +1,168 @@
 body {
-    margin: 0;
+  margin: 0;
 }
 
 .main {
-    background-color: #232F3E;
-    height: 3%;
+  background-color: #232f3e;
+  height: 3%;
+  font-family: "Amazon Ember";
+}
+
+button {
+  cursor: pointer;
 }
 
 #menuButton {
-    background-color: #232F3E;
-    float: left;
-    margin: 7px 7px 8px 7px;
-    padding: 3px;
-    width: 38px;
-    height: 36px;
-    border-radius: 3px;
-    border: 1px solid #666;
+  background-color: #232f3e;
+  float: left;
+  margin: 7px 7px 8px 7px;
+  padding: 3px;
+  width: 38px;
+  height: 36px;
+  border-radius: 3px;
+  border: 1px solid #666;
 }
 
-#Gammazon {
-    font-size: 30px;
-    color: white;
-    margin: 10px 20px 5px 8px;
+#Gzon {
+  font-size: 30px;
+  color: white;
+  margin: 10px 20px 5px 8px;
 }
 
 #category {
-    background-color: #F3F3F3;
-    padding-top: 20px;
-    padding-bottom: 24px;
+  background-color: #f3f3f3;
+  height: 100%;
+  margin: 0;
+  padding-top: 6px;
+  border-radius: 3px 0 0 3px;
+}
 
+.searchbar {
+  height: 50px;
+  width: 60%;
+  display: inline-block;
+  margin: 0;
+  padding-top: 4px;
+  box-sizing: border-box;
+}
+
+.search {
+  height: 87%;
+  width: 90%;
+  font-size: 18px;
+  outline: none;
+}
+
+.search:focus {
+  box-shadow: inset 0 0 1px #f9bd69;
+  outline: none;
+}
+
+#submit {
+  background-color: #f9bd69;
+  height: 100%;
+  padding-bottom: 9px;
+  border-radius: 0 3px 3px 0;
+  position: relative;
+  margin: 0;
+  border-bottom: 2px solid #f9bd69;
+  box-sizing: border-box;
+}
+
+#finalButtons {
+  display: inline-flex;
+  width: 22%;
+  height: 50px;
+}
+
+.language {
+  background-color: #232f3e;
+  border: none;
+  font-family: "Amazon Ember";
+  font-size: 13px;
+  color: white;
+  margin-left: 3%;
+  margin-right: 3%;
+  text-align: left;
+}
+
+.language:active {
+  outline: none;
+  background-color: #324358;
+}
+
+.language:focus {
+  outline: none;
+}
+
+#tiny {
+  font-size: 10px;
+}
+
+.address {
+  background-color: #232f3e;
+  outline: none;
+  border: none;
+  color: white;
+  text-align: left;
+  font-size: 18px;
+  font-family: "Amazon Ember";
+}
+
+#idTiny {
+  font-size: 13px;
+}
+
+#undersearch {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 55%;
+  margin-left: 2%;
+}
+
+.underSearch {
+  background-color: #232f3e;
+  outline: none;
+  border: none;
+  color: #cbcbcb;
+}
+
+.underSearch:active {
+  outline: none;
+  background-color: #324358;
+}
+
+.underSearch:focus {
+  outline: none;
+}
+
+#deliverTiny {
+  font-size: 15px;
+}
+
+#hireUs {
+  font-family: "Amazon Ember";
+  color: #f9bd69;
+  font-size: 25px;
+  margin-left: 8%;
+}
+
+#cart-ml {
+  margin-left: 0;
+  position: absolute;
+  left: 93%;
+}
+
+#cartVal {
+  position: absolute;
+  justify-content: center;
+  color: white;
+  background-color: #f9bd69;
+  height: 10px;
+  width: 10px;
+  padding: 6px;
+  padding-top: 8px;
+  border-radius: 50%;
+  left: 94%;
+  top: 10px;
 }
