@@ -8,6 +8,10 @@ body {
   font-family: "Amazon Ember";
 }
 
+button {
+  cursor: pointer;
+}
+
 #menuButton {
   background-color: #232f3e;
   float: left;
@@ -19,7 +23,7 @@ body {
   border: 1px solid #666;
 }
 
-#Gammazon {
+#Gzon {
   font-size: 30px;
   color: white;
   margin: 10px 20px 5px 8px;
@@ -27,8 +31,9 @@ body {
 
 #category {
   background-color: #f3f3f3;
-  height: 92%;
-  padding-top: 7px;
+  height: 100%;
+  margin: 0;
+  padding-top: 6px;
   border-radius: 3px 0 0 3px;
 }
 
@@ -36,11 +41,13 @@ body {
   height: 50px;
   width: 60%;
   display: inline-block;
-  margin-top: 8px;
+  margin: 0;
+  padding-top: 4px;
+  box-sizing: border-box;
 }
 
 .search {
-  height: 80%;
+  height: 87%;
   width: 90%;
   font-size: 18px;
   outline: none;
@@ -53,10 +60,13 @@ body {
 
 #submit {
   background-color: #f9bd69;
-  height: 91%;
-  padding-bottom: 7px;
+  height: 100%;
+  padding-bottom: 9px;
   border-radius: 0 3px 3px 0;
-  border: 3px solid #f9bd69;
+  position: relative;
+  margin: 0;
+  border-bottom: 2px solid #f9bd69;
+  box-sizing: border-box;
 }
 
 #finalButtons {
@@ -80,6 +90,7 @@ body {
   outline: none;
   background-color: #324358;
 }
+
 .language:focus {
   outline: none;
 }
@@ -87,6 +98,7 @@ body {
 #tiny {
   font-size: 10px;
 }
+
 .address {
   background-color: #232f3e;
   outline: none;
@@ -119,9 +131,11 @@ body {
   outline: none;
   background-color: #324358;
 }
+
 .underSearch:focus {
   outline: none;
 }
+
 #deliverTiny {
   font-size: 15px;
 }
@@ -133,8 +147,10 @@ body {
   margin-left: 8%;
 }
 
-#cart {
+#cart-ml {
   margin-left: 0;
+  position: absolute;
+  left: 93%;
 }
 
 #cartVal {
@@ -142,9 +158,11 @@ body {
   justify-content: center;
   color: white;
   background-color: #f9bd69;
-  height: 8px;
-  width: 8px;
+  height: 10px;
+  width: 10px;
   padding: 6px;
+  padding-top: 8px;
   border-radius: 50%;
-  left: 90.2%;
+  left: 94%;
+  top: 10px;
 }
